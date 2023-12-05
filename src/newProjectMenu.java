@@ -41,6 +41,7 @@ public class newProjectMenu{
                 builder.getProjectHandler().getProjectsList().get(builder.getProjectHandler().countProjects()-1).create_task(taskName, taskDesc);
                 //returns to home page
                 builder.getFrame().setContentPane(builder.getMainMenuGUI().getPanel());
+
             }
         });
 

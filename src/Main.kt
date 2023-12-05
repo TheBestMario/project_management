@@ -15,10 +15,10 @@ class Builder(
     fun buildMenu(){
         frame.contentPane = mainMenuGUI.panel
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-        frame.pack()
         frame.isVisible = true
         frame.setSize(701, 701)
         frame.setLocationRelativeTo(null)
+
     }
     fun getProjectHandler(): projectHandler {
         return projectHandler

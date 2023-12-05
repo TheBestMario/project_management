@@ -23,7 +23,6 @@ public class mainMenuGUI {
         viewExistingProjectsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                builder.setSize(700,700);
                 frame.setContentPane(builder.getViewProjectsMenu().getPanel());
             }
         });

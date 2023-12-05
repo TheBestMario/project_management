@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,6 +11,7 @@ public class viewProjectsMenu{
     private JScrollPane jscrollPane;
 
     private JTable table1;
+    private JButton deleteProjectButton;
 
     private final Builder builder;
     public viewProjectsMenu(Builder builder){
@@ -21,6 +24,7 @@ public class viewProjectsMenu{
                 builder.getFrame().setContentPane(builder.getMainMenuGUI().getPanel());
             }
         });
+
     }
 
     private void updateTable(){

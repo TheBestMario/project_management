@@ -13,9 +13,11 @@ class projectHandler(private val builder: Builder){
     }
     fun makeNewProject(name: String,description: String, num_Tasks: Int){
         val project = Project(id+1,name,description, num_Tasks)
+        project.update_adjMatrix()
         updateListWith(project)
         System.out.println(project.toString())
         builder.getTableHandler().updateTableAdded()
+
 
     }
     fun getProjectsList(): MutableList<Project>{
@@ -38,12 +40,27 @@ class Project(
 )
 
 {
-    private lateinit var adjMatrix: Array<IntArray>
+    private val taskList: ArrayList<Task> = arrayListOf(Task("",1,"",0),Task("",1,"",1),Task("",1,"",1))
+    private var adjMatrix: ArrayList<ArrayList<Boolean>> = arrayListOf()
+
+    fun update_adjMatrix(){
 
 
-    fun update_adjMatrix(parents: Array<IntArray>, id: Int){
+        if (num_Tasks == 0)
+            print("no tasks")
+        else
+            for (i in 0..num_Tasks) {
+                val tempArray = arrayListOf<Boolean>()
 
-        this.adjMatrix
+                for (j in 0..num_Tasks) {
+                    val isParent = this.taskList.get(i).getParent()
+                    if (j == 0)
+                        continue
+                    else if (isParent == j) {
+                        this.adjMatrix.set(i, tempArray).add(j, true)
+                    }
+                }
+            }
     }
     fun getAttributeInArray(): Array<String>{
         return arrayOf(name, description, "$num_Tasks")
@@ -52,8 +69,8 @@ class Project(
         return "$id, $name, $description, $num_Tasks"
     }
     fun create_task(name: String, desc: String){
-        val task = Task(name, +1, desc)
-        //task_list.add(task)
+        val task = Task(name, +1, desc, 1)
+        this.taskList.add(task)
     }
     fun removeTaskFromList(task: Task){
         //task_list.remove(task)
@@ -63,10 +80,11 @@ class Project(
     class Task(
         private var name: String,
         private val id: Int,
-        private var desc: String
+        private var desc: String,
+        private var parent: Int
     ){
-       fun test(){
-
+       fun getParent(): Int{
+           return parent
        }
     }
 
@@ -83,11 +101,11 @@ class TableHandler(private val builder:Builder){
         //checks for already existing data and adds to table.
         list= builder.getProjectHandler().getProjectsList()
         size= builder.getProjectHandler().countProjects()
-        var array:Array<Project> = list.toTypedArray()
+        val array:Array<Project> = list.toTypedArray()
         for (item in list.indices)
         {
             //println(list)
-            var data: Array<String> = array[item].getAttributeInArray()
+            val data: Array<String> = array[item].getAttributeInArray()
 
             if (size != 0) {
                 ourmodel.addRow(arrayOf(data))
