@@ -7,15 +7,16 @@ public class mainMenuGUI {
     private JButton exitButton;
     private JPanel panel;
 
-    public mainMenuGUI(Builder builder){
+    public mainMenuGUI(menuHandler menuHandler){
         //recieves buildmenu Object as a parameter, so it can access the object it has created (the other GUIs)
-        JFrame frame  = builder.getFrame();
+        JFrame frame  = menuHandler.getFrame();
 
         setUpNewProjectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //gets panel from object newprojectmenu from object buildmenu. quite long-winded
-                frame.setContentPane(builder.getNewProjectMenu().getPanel());
+                frame.setContentPane(menuHandler.getNewProjectMenu().getPanel());
+                frame.setSize(699,699);
             }
 
         });
@@ -23,7 +24,8 @@ public class mainMenuGUI {
         viewExistingProjectsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setContentPane(builder.getViewProjectsMenu().getPanel());
+                frame.setContentPane(menuHandler.getViewProjectsMenu().getPanel());
+                frame.setSize(700,700);
             }
         });
 

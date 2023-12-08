@@ -79,7 +79,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="a217e" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+          <component id="a217e" class="javax.swing.JTextArea" binding="projectDescTextArea" default-binding="true">
             <constraints/>
             <properties>
               <lineWrap value="true"/>
@@ -87,9 +87,9 @@
           </component>
         </children>
       </scrollpane>
-      <component id="9a14c" class="javax.swing.JTree" binding="tree1" default-binding="true">
+      <component id="c2036" class="javax.swing.JList" binding="taskList" default-binding="true">
         <constraints>
-          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>

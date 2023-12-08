@@ -1,27 +1,22 @@
-import javax.swing.table.DefaultTableModel
 
-class projectHandler(private val builder: Builder){
+class projectHandler(private val menuHandler: menuHandler){
 
     private var projectsList: MutableList<Project> = mutableListOf()
     private var id = 0
 
+
+    fun makeNewProject(name: String,description: String, num_Tasks: Int){
+        val project = Project(id+1,name,description, num_Tasks)
+        project.update_adjMatrix()
+        updateListWith(project)
+    }
     fun updateListWith(Item: Project){
         projectsList.add(Item)
     }
     fun removeFromList(Item: Project){
         projectsList.remove(Item)
     }
-    fun makeNewProject(name: String,description: String, num_Tasks: Int){
-        val project = Project(id+1,name,description, num_Tasks)
-        project.update_adjMatrix()
-        updateListWith(project)
-        System.out.println(project.toString())
-        builder.getTableHandler().updateTableAdded()
-
-
-    }
     fun getProjectsList(): MutableList<Project>{
-        println(projectsList)
         return projectsList
     }
     fun getCurrentObjectAttributes(): Array<String> {
@@ -40,40 +35,49 @@ class Project(
 )
 
 {
-    private val taskList: ArrayList<Task> = arrayListOf(Task("",1,"",0),Task("",1,"",1),Task("",1,"",1))
+    private val taskList: ArrayList<Task> = arrayListOf()
     private var adjMatrix: ArrayList<ArrayList<Boolean>> = arrayListOf()
 
     fun update_adjMatrix(){
-
-
+        adjMatrix = arrayListOf()
+        num_Tasks = this.taskList.size
         if (num_Tasks == 0)
-            print("no tasks")
+            println("no tasks")
         else
-            for (i in 0..num_Tasks) {
+            for (i in 1..num_Tasks) {
                 val tempArray = arrayListOf<Boolean>()
-
-                for (j in 0..num_Tasks) {
-                    val isParent = this.taskList.get(i).getParent()
-                    if (j == 0)
-                        continue
-                    else if (isParent == j) {
-                        this.adjMatrix.set(i, tempArray).add(j, true)
+                this.adjMatrix.add(tempArray)
+                for (j in 1..num_Tasks) {
+                    val isParent = this.taskList[i - 1].getParent()
+                    if (isParent == j && isParent != 0) {
+                        //sets child connection to parent
+                        this.adjMatrix[i - 1].add(true)
+                        //sets parent's connection to the child in array
+                        this.adjMatrix[j - 1].set(i- 1,true)
+                    } else {
+                        this.adjMatrix[i - 1].add(false)
                     }
                 }
             }
+        println(this.adjMatrix)
     }
     fun getAttributeInArray(): Array<String>{
+
         return arrayOf(name, description, "$num_Tasks")
     }
     override fun toString(): String{
         return "$id, $name, $description, $num_Tasks"
     }
-    fun create_task(name: String, desc: String){
-        val task = Task(name, +1, desc, 1)
-        this.taskList.add(task)
+    fun create_task(list: Array<Array<String>>){
+        //makes Task Object for each input
+        for (i in 0 .. list.size-1){
+            val task = Task(list[i][0], i+1,list[i][1], 0)
+            taskList.add(task)
+        }
+        update_adjMatrix()
     }
     fun removeTaskFromList(task: Task){
-        //task_list.remove(task)
+        taskList.remove(task)
     }
 
 
@@ -86,40 +90,38 @@ class Project(
        fun getParent(): Int{
            return parent
        }
-    }
-
-}
-
-class TableHandler(private val builder:Builder){
-    //recieves project details from the handler to update visual table in this menu
-    private var list: MutableList<Project> = builder.getProjectHandler().getProjectsList()
-    private var columnNames = arrayOf("Project Name", "Description", "Num. Tasks")
-    private var ourmodel:DefaultTableModel = DefaultTableModel(columnNames, 0)
-    private var size: Int = 0
-
-    fun firstUpdateTable(){
-        //checks for already existing data and adds to table.
-        list= builder.getProjectHandler().getProjectsList()
-        size= builder.getProjectHandler().countProjects()
-        val array:Array<Project> = list.toTypedArray()
-        for (item in list.indices)
-        {
-            //println(list)
-            val data: Array<String> = array[item].getAttributeInArray()
-
-            if (size != 0) {
-                ourmodel.addRow(arrayOf(data))
-                //println(data[item])
-            }
+        fun getID(): Int{
+            return id
         }
     }
-    fun updateTableAdded(){
-        val project = builder.getProjectHandler().getCurrentObjectAttributes()
-        ourmodel.addRow(project)
-    }
 
-    fun getmodel(): DefaultTableModel{
-        return ourmodel
-    }
 }
+
+//class TableHandler(private val menuHandler:menuHandler){
+//    //recieves project details from the handler to update visual table in this menu
+//    private var list: MutableList<Project> = menuHandler.getProjectHandler().getProjectsList()
+//    private var size: Int = 0
+//
+//    fun firstUpdateTable(){
+//        //checks for already existing data and adds to table.
+//        list= menuHandler.getProjectHandler().getProjectsList()
+//        size= menuHandler.getProjectHandler().countProjects()
+//        val array:Array<Project> = list.toTypedArray()
+//        for (item in list.indices)
+//
+//        {
+//            //println(list)
+//            val data: Array<String> = array[item].getAttributeInArray()
+//
+//            if (size != 0) {
+//                //tablemodel.addRow(arrayOf(data))
+//                //println(data[item])
+//            }
+//        }
+//    }
+//    fun updateTableAdded(){
+//        val project = menuHandler.getProjectHandler().getCurrentObjectAttributes()
+//        //tablemodel.addRow(project)
+//    }
+//}
 
