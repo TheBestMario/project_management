@@ -1,4 +1,6 @@
-class projectHandler(private val menuHandler: menuHandler){
+import java.awt.Menu
+
+class projectHandler {
 
     private var projectsList: MutableList<Project> = mutableListOf()
     private var id = 0
@@ -6,6 +8,7 @@ class projectHandler(private val menuHandler: menuHandler){
 
     fun makeNewProject(name: String,description: String){
         val project = Project(id+1,name,description)
+        println("PROJECT")
         project.update_adjMatrix()
         updateListWith(project)
     }
@@ -27,12 +30,14 @@ class projectHandler(private val menuHandler: menuHandler){
 }
 
 class Project(
+    //project params
     private val id: Int,
     private var name: String,
     private var description: String,
 )
 
 {
+    //initialise variables
     private var num_Tasks: Int = 0
     private val taskList: ArrayList<Task> = arrayListOf()
     private var adjMatrix: ArrayList<ArrayList<Boolean>> = arrayListOf()

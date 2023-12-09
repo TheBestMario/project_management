@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class newProjectMenu implements KeyListener {
+public class NewProjectMenu extends MenuHandler implements KeyListener {
     private JLabel buildYourProjectLabel;
     private JTextField projectNameField;
     private JLabel projectNameLabel;
@@ -29,7 +29,7 @@ public class newProjectMenu implements KeyListener {
     private Object info;
     private String rootName;
     private DefaultMutableTreeNode selectedNode;
-    public newProjectMenu(menuHandler menuHandler) {
+    public NewProjectMenu() {
         //initialises some variables and builds menu
         rootName = "New Project";
         taskName = new JTextField();
@@ -59,17 +59,18 @@ public class newProjectMenu implements KeyListener {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                menuHandler.getFrame().setContentPane(menuHandler.getMainMenuGUI().getPanel());
+                getFrame().setContentPane(getMainMenuGUI().getPanel());
             }
         });
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int taskInput = (JOptionPane.showConfirmDialog(menuHandler.getFrame(),taskPanel,
+                int taskInput = (JOptionPane.showConfirmDialog(getFrame(),taskPanel,
                         "Enter task Name and Description",JOptionPane.OK_CANCEL_OPTION));
                 if (taskInput == JOptionPane.OK_OPTION && !taskName.getText().isEmpty()){
                     //adds task info into UI elements
                     //taskListModel.addElement(taskName.getText());
+                    //adds task made to temp list with attributes Name, Description, Parent(parent's ID)
                     temp.add(new String[]{taskName.getText(),taskDesc.getText(),String.valueOf(1)});
                     DefaultMutableTreeNode node = new DefaultMutableTreeNode(taskName.getText());
                     if (info == null || info == root.getUserObject()){
@@ -91,20 +92,19 @@ public class newProjectMenu implements KeyListener {
                 //sequence of what happens after pressing submit
                 String Name = projectNameField.getText();
                 String Description = projectDescTextArea.getText();
-                String taskName = "temp name";
-                String taskDesc = "temp description";
+
                 //sends data to make project
-                menuHandler.getProjectHandler().makeNewProject(Name,Description);
+                getProjectHandler().makeNewProject(Name,Description);
 
                 //sends data to make tasks for latest project.
                 if (temp != null){
-                    menuHandler.getProjectHandler().getProjectsList().get(
-                            menuHandler.getProjectHandler().countProjects()-1).create_task(temp);
+                    getProjectHandler().getProjectsList().get(
+                            getProjectHandler().countProjects()-1).create_task(temp);
                 }
                 //updates table after data saved
-                menuHandler.getViewProjectsMenu().updateTable();
+                getViewProjectsMenu().updateTable();
                 //returns to home page
-                menuHandler.getFrame().setContentPane(menuHandler.getMainMenuGUI().getPanel());
+                getFrame().setContentPane(getMainMenuGUI().getPanel());
 
             }
         });
