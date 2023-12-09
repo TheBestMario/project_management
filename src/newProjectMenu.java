@@ -1,11 +1,14 @@
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
-public class newProjectMenu{
-
+public class newProjectMenu implements KeyListener {
     private JLabel buildYourProjectLabel;
     private JTextField projectNameField;
     private JLabel projectNameLabel;
@@ -15,22 +18,44 @@ public class newProjectMenu{
     private JPanel panel;
     private JButton backButton;
     private JTextArea projectDescTextArea;
-    private JList taskList;
-    private DefaultListModel<String> taskListModel;
+    private JTree tree;
+    //private JList taskList;
+    //private DefaultListModel<String> taskListModel;
+    private DefaultTreeModel taskTreeModel;
     private JTextField taskName, taskDesc;
     private JPanel taskPanel;
-
+    public ArrayList<String[]> temp;
+    private DefaultMutableTreeNode root;
+    private Object info;
+    private String rootName;
+    private DefaultMutableTreeNode selectedNode;
     public newProjectMenu(menuHandler menuHandler) {
-        int Num_Tasks = 0;
-
+        //initialises some variables and builds menu
+        rootName = "New Project";
         taskName = new JTextField();
         taskDesc = new JTextField();
         taskPanel = new JPanel();
-        LayoutManager BoxLayout = new BoxLayout(taskPanel, javax.swing.BoxLayout.X_AXIS);
+        LayoutManager BoxLayout = new BoxLayout(taskPanel, javax.swing.BoxLayout.LINE_AXIS);
         taskPanel.setLayout(BoxLayout);
         taskPanel.add(taskName);
         taskPanel.add(taskDesc);
-        taskListModel = new DefaultListModel<>();
+        //taskListModel = new DefaultListModel<>();
+        root = new DefaultMutableTreeNode("New Project");
+        taskTreeModel = new DefaultTreeModel(root);
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        projectNameField.addKeyListener(this);
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                if (selectedNode == null) return;
+                else{
+                    info = selectedNode.getUserObject();
+                    System.out.println(info);
+                }
+            }
+
+        });
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,8 +68,17 @@ public class newProjectMenu{
                 int taskInput = (JOptionPane.showConfirmDialog(menuHandler.getFrame(),taskPanel,
                         "Enter task Name and Description",JOptionPane.OK_CANCEL_OPTION));
                 if (taskInput == JOptionPane.OK_OPTION && !taskName.getText().isEmpty()){
-                    taskListModel.addElement(taskName.getText());
+                    //adds task info into UI elements
+                    //taskListModel.addElement(taskName.getText());
+                    temp.add(new String[]{taskName.getText(),taskDesc.getText(),String.valueOf(1)});
+                    DefaultMutableTreeNode node = new DefaultMutableTreeNode(taskName.getText());
+                    if (info == null || info == root.getUserObject()){
+                        root.add(node);
+                    }else {
+                        selectedNode.add(node);
 
+                    }
+                    taskTreeModel.reload();
                     //resets task inputs
                     taskName.setText("");
                     taskDesc.setText("");
@@ -59,29 +93,61 @@ public class newProjectMenu{
                 String Description = projectDescTextArea.getText();
                 String taskName = "temp name";
                 String taskDesc = "temp description";
-                String[][] temp = new String[][]{{taskName,taskDesc},{taskName,taskDesc}};
                 //sends data to make project
-                menuHandler.getProjectHandler().makeNewProject(Name,Description, Num_Tasks);
+                menuHandler.getProjectHandler().makeNewProject(Name,Description);
 
                 //sends data to make tasks for latest project.
-                menuHandler.getProjectHandler().getProjectsList().get(
-                        menuHandler.getProjectHandler().countProjects()-1).create_task(temp);
+                if (temp != null){
+                    menuHandler.getProjectHandler().getProjectsList().get(
+                            menuHandler.getProjectHandler().countProjects()-1).create_task(temp);
+                }
                 //updates table after data saved
                 menuHandler.getViewProjectsMenu().updateTable();
-                //resets panel and returns to home page
-                projectNameField.setText("");
-                projectDescTextArea.setText("");
+                //returns to home page
                 menuHandler.getFrame().setContentPane(menuHandler.getMainMenuGUI().getPanel());
 
             }
         });
 
     }
+
+
+
     public JPanel getPanel() {
+        //every time the menu is opened it will reset it.
+        resetTempData();
         updateDrawList();
         return panel;
     }
+    public void resetTempData(){
+        //resets data from previous UI
+        //taskListModel.removeAllElements();
+        rootName = "New Project";
+        projectNameField.setText("");
+        projectDescTextArea.setText("");
+        root.removeAllChildren();
+        tree.setModel(null);
+        taskTreeModel.reload();
+        temp = new ArrayList<String[]>();
+    }
     private void updateDrawList(){
-        taskList.setModel(taskListModel);
+        tree.setModel(taskTreeModel);
+        //taskList.setModel(taskListModel);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        rootName = projectNameField.getText();
+        System.out.println(rootName);
+        root.setUserObject(rootName);
+        taskTreeModel.reload();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }

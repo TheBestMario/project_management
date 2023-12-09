@@ -1,12 +1,11 @@
-
 class projectHandler(private val menuHandler: menuHandler){
 
     private var projectsList: MutableList<Project> = mutableListOf()
     private var id = 0
 
 
-    fun makeNewProject(name: String,description: String, num_Tasks: Int){
-        val project = Project(id+1,name,description, num_Tasks)
+    fun makeNewProject(name: String,description: String){
+        val project = Project(id+1,name,description)
         project.update_adjMatrix()
         updateListWith(project)
     }
@@ -20,7 +19,7 @@ class projectHandler(private val menuHandler: menuHandler){
         return projectsList
     }
     fun getCurrentObjectAttributes(): Array<String> {
-        return projectsList.last().getAttributeInArray()
+        return projectsList.last().getAttributesArrayForm()
     }
     fun countProjects() : Int{
         return projectsList.size
@@ -31,10 +30,10 @@ class Project(
     private val id: Int,
     private var name: String,
     private var description: String,
-    private var num_Tasks: Int,
 )
 
 {
+    private var num_Tasks: Int = 0
     private val taskList: ArrayList<Task> = arrayListOf()
     private var adjMatrix: ArrayList<ArrayList<Boolean>> = arrayListOf()
 
@@ -61,23 +60,24 @@ class Project(
             }
         println(this.adjMatrix)
     }
-    fun getAttributeInArray(): Array<String>{
+    fun getAttributesArrayForm(): Array<String>{
 
         return arrayOf(name, description, "$num_Tasks")
     }
     override fun toString(): String{
         return "$id, $name, $description, $num_Tasks"
     }
-    fun create_task(list: Array<Array<String>>){
+    fun create_task(list: ArrayList<Array<String>>){
         //makes Task Object for each input
         for (i in 0 .. list.size-1){
-            val task = Task(list[i][0], i+1,list[i][1], 0)
+            val task = Task(list[i][0], i+1,list[i][1],Integer.valueOf(list[i][2]))
             taskList.add(task)
         }
         update_adjMatrix()
     }
     fun removeTaskFromList(task: Task){
         taskList.remove(task)
+        update_adjMatrix()
     }
 
 

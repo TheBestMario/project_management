@@ -47,7 +47,7 @@ fun main() {
         }
         results.close()
     } catch (e: Exception){
-        println("problem occured")
+        println("problem occured with database")
     }
     val run = menuHandler()
     run.buildMenu()

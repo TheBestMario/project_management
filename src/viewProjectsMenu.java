@@ -2,8 +2,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class viewProjectsMenu{
@@ -35,7 +33,7 @@ public class viewProjectsMenu{
         //recieves project details from the handler to update visual table in this menu
         String [] project = menuHandler.getProjectHandler().getCurrentObjectAttributes();
         table1Model.addRow(project);
-        System.out.println("updating table...");
+        System.out.println("updating project table...");
     }
 
     public JTable getTable1(){
@@ -55,7 +53,7 @@ public class viewProjectsMenu{
         Project[] array = (Project[]) list.toArray();
         for (int item = 0; item < list.size(); item++){
             //System.out.println(list)
-            String[] data = array[item].getAttributeInArray();
+            String[] data = array[item].getAttributesArrayForm();
 
             if (size != 0) {
                 table1Model.addRow(data);
