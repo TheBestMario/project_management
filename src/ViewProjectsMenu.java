@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class ViewProjectsMenu extends MenuHandler{
+public class ViewProjectsMenu {
     private JPanel panel;
     private JButton backButton;
     private JLabel viewLabel;
@@ -13,7 +13,10 @@ public class ViewProjectsMenu extends MenuHandler{
     private JButton deleteProjectButton;
     private DefaultTableModel table1Model;
     private String[] columnNames;
-    public ViewProjectsMenu(){
+    private MenuHandler menuHandler;
+
+    public ViewProjectsMenu(MenuHandler menuHandler) {
+        this.menuHandler = menuHandler;
         //menuHandler.getTableHandler().firstUpdateTable();
         //initialTableUpdate();
         columnNames = new String[]{"Project Name", "Description", "Num. Tasks"};
@@ -22,32 +25,35 @@ public class ViewProjectsMenu extends MenuHandler{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getFrame().setContentPane(getMainMenuGUI().getPanel());
+                menuHandler.getFrame().setContentPane(menuHandler.getMainMenuGUI().getPanel());
             }
         });
     }
 
-    public void updateTable(){
+    public void updateTable() {
         //recieves project details from the handler to update visual table in this menu
-        String [] project = getProjectHandler().getCurrentObjectAttributes();
+        String[] project = menuHandler.getProjectHandler().getCurrentObjectAttributes();
         table1Model.addRow(project);
         System.out.println("updating project table...");
     }
 
-    public JTable getTable1(){
+    public JTable getTable1() {
         return table1;
     }
 
-    public JPanel getPanel(){
+    public JPanel getPanel() {
         return panel;
     }
-    public DefaultTableModel getModel(){
+
+    public DefaultTableModel getModel() {
         return table1Model;
     }
+
+
     public void initialTableUpdate(){
         //checks for already existing data and adds to table.
-        List<Project> list= getProjectHandler().getProjectsList();
-        int size= getProjectHandler().countProjects();
+        List<Project> list= menuHandler.getProjectHandler().getProjectsList();
+        int size= menuHandler.getProjectHandler().countProjects();
         Project[] array = (Project[]) list.toArray();
         for (int item = 0; item < list.size(); item++){
             //System.out.println(list)

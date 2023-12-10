@@ -7,7 +7,8 @@ class projectHandler {
 
 
     fun makeNewProject(name: String,description: String){
-        val project = Project(id+1,name,description)
+        val project = Project(id,name,description)
+
         println("PROJECT")
         project.update_adjMatrix()
         updateListWith(project)
@@ -75,6 +76,7 @@ class Project(
     fun create_task(list: ArrayList<Array<String>>){
         //makes Task Object for each input
         for (i in 0 .. list.size-1){
+            //Name, Desc, ID
             val task = Task(list[i][0], i+1,list[i][1],Integer.valueOf(list[i][2]))
             taskList.add(task)
         }
@@ -101,6 +103,7 @@ class Project(
     }
 
 }
+
 
 //class TableHandler(private val menuHandler:menuHandler){
 //    //recieves project details from the handler to update visual table in this menu

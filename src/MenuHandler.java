@@ -3,19 +3,21 @@ import javax.swing.*;
 public class MenuHandler {
     //initialises all relevant systems
     private final JFrame frame;
-    private projectHandler projectHandler;
-    private MainMenuGUI mainMenuGui;
-    private NewProjectMenu newProjectMenu;
-    private ViewProjectsMenu viewProjectsMenu;
+
     //private val table: TableHandler = TableHandler(this)
 
+    private final MainMenuGUI mainMenuGUI;
+
+    private final projectHandler projectHandler;
+    private final NewProjectMenu newProjectMenu;
+    private final ViewProjectsMenu viewProjectsMenu;
     public MenuHandler(){
-        this.frame = new JFrame();
-        this.mainMenuGui = new MainMenuGUI();
+        this.mainMenuGUI = new MainMenuGUI(this);
         this.projectHandler = new projectHandler();
-        this.newProjectMenu = new NewProjectMenu();
-        this.viewProjectsMenu = new ViewProjectsMenu();
-        frame.setContentPane(mainMenuGui.getPanel());
+        this.newProjectMenu = new NewProjectMenu(this);
+        this.viewProjectsMenu = new ViewProjectsMenu(this);
+        this.frame = new JFrame();
+        frame.setContentPane(mainMenuGUI.getPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setSize(701, 701);
@@ -29,7 +31,7 @@ public class MenuHandler {
         return frame;
     }
     public MainMenuGUI getMainMenuGUI(){
-        return mainMenuGui;
+        return mainMenuGUI;
     }
     public NewProjectMenu getNewProjectMenu(){
         return newProjectMenu;
@@ -41,3 +43,5 @@ public class MenuHandler {
 //        return table;
 //    }
 }
+
+
