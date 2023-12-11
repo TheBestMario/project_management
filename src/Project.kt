@@ -1,28 +1,29 @@
-import java.awt.Menu
-
-class projectHandler {
+import kotlin.toString
+class ProjectHandler {
 
     private var projectsList: MutableList<Project> = mutableListOf()
-    private var id = 0
+    private var id = 1
 
 
-    fun makeNewProject(name: String,description: String){
-        val project = Project(id,name,description)
-
+    fun makeNewProject(){
+        val project = Project(id,null,null)
+        id+=1
         println("PROJECT")
-        project.update_adjMatrix()
         updateListWith(project)
     }
     fun updateListWith(Item: Project){
         projectsList.add(Item)
     }
-    fun removeFromList(Item: Project){
-        projectsList.remove(Item)
+    fun removeFromList(ID:Int){
+        for (i in projectsList)
+            if (i.getId() == ID)
+                projectsList.remove(i)
+        System.out.println(projectsList)
     }
     fun getProjectsList(): MutableList<Project>{
         return projectsList
     }
-    fun getCurrentObjectAttributes(): Array<String> {
+    fun getCurrentObjectAttributes(): Array<String?> {
         return projectsList.last().getAttributesArrayForm()
     }
     fun countProjects() : Int{
@@ -33,8 +34,8 @@ class projectHandler {
 class Project(
     //project params
     private val id: Int,
-    private var name: String,
-    private var description: String,
+    private var name: String?,
+    private var description: String?,
 )
 
 {
@@ -45,7 +46,6 @@ class Project(
 
     fun update_adjMatrix(){
         adjMatrix = arrayListOf()
-        num_Tasks = this.taskList.size
         if (num_Tasks == 0)
             println("no tasks")
         else
@@ -66,39 +66,93 @@ class Project(
             }
         println(this.adjMatrix)
     }
-    fun getAttributesArrayForm(): Array<String>{
-
-        return arrayOf(name, description, "$num_Tasks")
+    fun getAttributesArrayForm(): Array<String?> {
+        return arrayOf("$id",name, description, "$num_Tasks")
+    }
+    fun getName(): String?{
+        return name;
+    }
+    fun getDescription(): String?{
+        if (description == null){
+            description = ""
+        }
+        return description
     }
     override fun toString(): String{
         return "$id, $name, $description, $num_Tasks"
     }
-    fun create_task(list: ArrayList<Array<String>>){
-        //makes Task Object for each input
-        for (i in 0 .. list.size-1){
-            //Name, Desc, ID
-            val task = Task(list[i][0], i+1,list[i][1],Integer.valueOf(list[i][2]))
-            taskList.add(task)
-        }
-        update_adjMatrix()
+
+    fun setName(Name:String){
+        name = Name;
     }
-    fun removeTaskFromList(task: Task){
+    fun setDesc(Desc:String){
+        description = Desc
+    }
+    fun createTask(): Task{
+        //makes Task Object for each input
+        num_Tasks+=1
+        val task = Task("",num_Tasks,null,null)
+        taskList.add(task)
+
+        update_adjMatrix()
+        return task
+    }
+    fun updateTask(Name: String, Desc: String, Parent: String){
+        taskList.last().setName(Name)
+        taskList.last().setDesc(Desc)
+        taskList.last().setParent(Integer.valueOf(Parent))
+    }
+    fun removeTask(task: Task){
+        num_Tasks-=1
+        for (i in 0 .. num_Tasks-1){
+            if (taskList[i].equals(task)){
+                val tasks = taskList.takeLast(i)
+                for (i in tasks){
+                    i.setId(i.getId()?.minus(1))
+                }
+                break
+            }
+        }
         taskList.remove(task)
         update_adjMatrix()
     }
+    fun getTaskList(): ArrayList<Task>{
+        return taskList
+    }
+    fun getId():Int{
+        return id
+    }
 
 
-    class Task(
+    inner class Task(
         private var name: String,
-        private val id: Int,
-        private var desc: String,
-        private var parent: Int
+        private var id: Int?,
+        private var description: String?,
+        private var parent: Int?
     ){
-       fun getParent(): Int{
+        fun getParent(): Int? {
            return parent
-       }
-        fun getID(): Int{
+        }
+
+        fun getId(): Int? {
             return id
+        }
+        fun setId(id: Int?){
+            this.id = id
+        }
+        fun setName(name: String){
+            this.name = name
+        }
+        fun setDesc(desc:String){
+            this.description = desc
+        }
+        fun setParent(p:Int){
+            this.parent = p
+            update_adjMatrix()
+        }
+
+        override fun toString(): String{
+            return name
         }
     }
 

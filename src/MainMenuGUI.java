@@ -39,5 +39,3 @@ public class MainMenuGUI implements ActionListener{
         }
     }
 }
-
-

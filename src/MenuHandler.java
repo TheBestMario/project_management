@@ -8,12 +8,12 @@ public class MenuHandler {
 
     private final MainMenuGUI mainMenuGUI;
 
-    private final projectHandler projectHandler;
+    private final ProjectHandler projectHandler;
     private final NewProjectMenu newProjectMenu;
     private final ViewProjectsMenu viewProjectsMenu;
     public MenuHandler(){
         this.mainMenuGUI = new MainMenuGUI(this);
-        this.projectHandler = new projectHandler();
+        this.projectHandler = new ProjectHandler();
         this.newProjectMenu = new NewProjectMenu(this);
         this.viewProjectsMenu = new ViewProjectsMenu(this);
         this.frame = new JFrame();
@@ -24,7 +24,7 @@ public class MenuHandler {
         frame.setLocationRelativeTo(null);
     }
 
-    public projectHandler getProjectHandler(){
+    public ProjectHandler getProjectHandler(){
         return projectHandler;
     }
     public JFrame getFrame(){
@@ -43,5 +43,3 @@ public class MenuHandler {
 //        return table;
 //    }
 }
-
-
