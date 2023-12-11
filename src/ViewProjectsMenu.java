@@ -27,10 +27,10 @@ public class ViewProjectsMenu{
         //initialTableUpdate();
         String[] columnNames = new String[]{"ID", "Project Name", "Description", "Num. Tasks"};
         table1Model = new DefaultTableModel(columnNames, 0);
-
         table1.setModel(table1Model);
         table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ListSelectionModel selectionModel = table1.getSelectionModel();
+
         table1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -104,7 +104,6 @@ public class ViewProjectsMenu{
         //recieves project details from the handler to update visual table in this menu
         String [] project = menuHandler.getProjectHandler().getCurrentObjectAttributes();
         table1Model.addRow(project);
-        System.out.println("updating project table...");
     }
     public JPanel getPanel(){
         return panel;

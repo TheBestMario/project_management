@@ -1,5 +1,4 @@
-import kotlin.toString
-class ProjectHandler {
+class ProjectHandler() {
 
     private var projectsList: MutableList<Project> = mutableListOf()
     private var id = 1
@@ -8,7 +7,6 @@ class ProjectHandler {
     fun makeNewProject(){
         val project = Project(id,null,null)
         id+=1
-        println("PROJECT")
         updateListWith(project)
     }
     fun updateListWith(Item: Project){
@@ -18,7 +16,6 @@ class ProjectHandler {
         for (i in projectsList)
             if (i.getId() == ID)
                 projectsList.remove(i)
-        System.out.println(projectsList)
     }
     fun getProjectsList(): MutableList<Project>{
         return projectsList
@@ -42,29 +39,32 @@ class Project(
     //initialise variables
     private var num_Tasks: Int = 0
     private val taskList: ArrayList<Task> = arrayListOf()
-    private var adjMatrix: ArrayList<ArrayList<Boolean>> = arrayListOf()
+    private var adjMatrix: ArrayList<ArrayList<Int>> = arrayListOf()
 
-    fun update_adjMatrix(){
+    fun updateAdjMatrix(){
         adjMatrix = arrayListOf()
         if (num_Tasks == 0)
             println("no tasks")
         else
             for (i in 1..num_Tasks) {
-                val tempArray = arrayListOf<Boolean>()
+                val tempArray = arrayListOf<Int>()
                 this.adjMatrix.add(tempArray)
                 for (j in 1..num_Tasks) {
                     val isParent = this.taskList[i - 1].getParent()
                     if (isParent == j && isParent != 0) {
                         //sets child connection to parent
-                        this.adjMatrix[i - 1].add(true)
+                        this.adjMatrix[i - 1].add(1)
                         //sets parent's connection to the child in array
-                        this.adjMatrix[j - 1].set(i- 1,true)
+                        this.adjMatrix[j - 1].set(i- 1,1)
                     } else {
-                        this.adjMatrix[i - 1].add(false)
+                        this.adjMatrix[i - 1].add(0)
                     }
                 }
             }
         println(this.adjMatrix)
+    }
+    fun getAdjMatrix(): ArrayList<ArrayList<Int>>{
+        return adjMatrix
     }
     fun getAttributesArrayForm(): Array<String?> {
         return arrayOf("$id",name, description, "$num_Tasks")
@@ -94,7 +94,6 @@ class Project(
         val task = Task("",num_Tasks,null,null)
         taskList.add(task)
 
-        update_adjMatrix()
         return task
     }
     fun updateTask(Name: String, Desc: String, Parent: String){
@@ -114,7 +113,6 @@ class Project(
             }
         }
         taskList.remove(task)
-        update_adjMatrix()
     }
     fun getTaskList(): ArrayList<Task>{
         return taskList
@@ -148,7 +146,6 @@ class Project(
         }
         fun setParent(p:Int){
             this.parent = p
-            update_adjMatrix()
         }
 
         override fun toString(): String{

@@ -75,7 +75,6 @@ public class NewProjectMenu implements KeyListener {
                 if (taskInput == JOptionPane.OK_OPTION && !taskName.getText().isEmpty()){
                     //makes template task
                     Project.Task task = projectHandler.getProjectsList().getLast().createTask();
-                    System.out.println("OK HIT");
                     //adds task info into UI elements
                     //taskListModel.addElement(taskName.getText());
                     //adds task made to temp list with attributes Name, Description, Parent(parent's ID)
@@ -101,7 +100,6 @@ public class NewProjectMenu implements KeyListener {
                     taskDesc.setText("");
                 }
                 else if (taskInput == JOptionPane.CANCEL_OPTION){
-                    System.out.println("Hit Cancel");
                 }
 
             }
@@ -155,9 +153,6 @@ public class NewProjectMenu implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
 
-        rootName = projectNameField.getText();
-        root.setUserObject(rootName);
-        taskTreeModel.reload();
     }
 
     @Override
@@ -166,5 +161,8 @@ public class NewProjectMenu implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        rootName = projectNameField.getText();
+        root.setUserObject(rootName);
+        taskTreeModel.reload();
     }
 }
