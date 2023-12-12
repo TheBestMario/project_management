@@ -159,6 +159,12 @@ class Project(
         fun setName(name: String){
             this.name = name
         }
+        fun getName(): String{
+            return this.name
+        }
+        fun getDates(): Array<LocalDate?>{
+            return arrayOf(startDate, endDate)
+        }
         fun setDesc(desc:String){
             this.description = desc
         }

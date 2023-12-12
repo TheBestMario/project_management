@@ -125,6 +125,7 @@ public class NewProjectMenu implements KeyListener {
     }
     public void resetTempData(){
         //resets data from previous UI
+        info = null;
         rootName = "New Project";
         root.setUserObject(rootName);
         projectNameField.setText(null);
