@@ -20,6 +20,7 @@ public class MenuHandler {
         frame.setContentPane(mainMenuGUI.getPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setSize(701, 701);
         frame.setLocationRelativeTo(null);
     }

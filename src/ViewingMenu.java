@@ -29,6 +29,7 @@ public class ViewingMenu {
 //            columns[i] = i;
 //        }
         DefaultTableModel model = new DefaultTableModel();
+        //adds data to the model of the table individually.
         for(int i = 0; i<=project.getAdjMatrix().size(); i++){
             if (i == 0){
                 model.addColumn("Tasks");

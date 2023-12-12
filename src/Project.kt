@@ -1,13 +1,21 @@
+import java.time.LocalDate
+import java.util.Date
+
 class ProjectHandler() {
 
     private var projectsList: MutableList<Project> = mutableListOf()
     private var id = 1
+    private var dateToday= LocalDate.now()
 
 
     fun makeNewProject(){
-        val project = Project(id,null,null)
+        val project = Project(id,null,null, dateToday, null)
         id+=1
         updateListWith(project)
+    }
+    fun getDateToday(): LocalDate{
+
+        return dateToday
     }
     fun updateListWith(Item: Project){
         projectsList.add(Item)
@@ -36,6 +44,8 @@ class Project(
     private val id: Int,
     private var name: String?,
     private var description: String?,
+    private var startDate: LocalDate,
+    private var endDate: LocalDate?
 )
 
 {
@@ -43,7 +53,12 @@ class Project(
     private var num_Tasks: Int = 0
     private val taskList: ArrayList<Task> = arrayListOf()
     private var adjMatrix: ArrayList<ArrayList<Int>> = arrayListOf()
-
+    fun updateDate(start: LocalDate, end: LocalDate?){
+        if (start != null)
+            this.startDate = start
+        if (end != null)
+            this.endDate = end
+    }
     fun updateAdjMatrix(){
         adjMatrix = arrayListOf()
         if (num_Tasks == 0)
@@ -70,7 +85,7 @@ class Project(
         return adjMatrix
     }
     fun getAttributesArrayForm(): Array<String?> {
-        return arrayOf("$id",name, description, "$num_Tasks")
+        return arrayOf("$id",name, description, "$num_Tasks","$startDate","$endDate")
     }
     fun getName(): String?{
         return name;
@@ -81,10 +96,9 @@ class Project(
         }
         return description
     }
-    override fun toString(): String{
-        return "$id, $name, $description, $num_Tasks"
-    }
+    fun divideTaskLength(){
 
+    }
     fun setName(Name:String){
         name = Name;
     }
@@ -98,11 +112,6 @@ class Project(
         taskList.add(task)
 
         return task
-    }
-    fun updateTask(Name: String, Desc: String, Parent: String){
-        taskList.last().setName(Name)
-        taskList.last().setDesc(Desc)
-        taskList.last().setParent(Integer.valueOf(Parent))
     }
     fun removeTask(task: Task){
         num_Tasks-=1
@@ -131,8 +140,14 @@ class Project(
         private var description: String?,
         private var parent: Int?
     ){
+        private var startDate:LocalDate? = null;
+        private var endDate:LocalDate? = null;
         fun getParent(): Int? {
            return parent
+        }
+        fun setDates(start: LocalDate, end: LocalDate){
+            startDate = start
+            endDate = end
         }
 
         fun getId(): Int? {
