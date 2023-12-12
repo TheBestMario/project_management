@@ -13,9 +13,12 @@ class ProjectHandler() {
         projectsList.add(Item)
     }
     fun removeFromList(ID:Int){
-        for (i in projectsList)
+        for (i in projectsList){
             if (i.getId() == ID)
                 projectsList.remove(i)
+                break
+        }
+
     }
     fun getProjectsList(): MutableList<Project>{
         return projectsList
