@@ -1,5 +1,8 @@
 import java.sql.*
 
+
+//Please use JDK version 21.
+//
 fun main() {
     try {
         val connection = DriverManager.getConnection("jdbc:sqlite:projects_database.db")

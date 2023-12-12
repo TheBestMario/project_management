@@ -22,8 +22,13 @@ public class ViewingMenu {
         textField1.setText(project.getName());
         textArea1.setText(project.getDescription());
         project.updateAdjMatrix();
-        DefaultTableModel model = new DefaultTableModel();
         table1.setEnabled(false);
+
+//        Integer[] columns = new Integer[project.getAdjMatrix().length];
+//        for(int i = 0; i<=project.getAdjMatrix().length; i++) {
+//            columns[i] = i;
+//        }
+        DefaultTableModel model = new DefaultTableModel();
         for(int i = 0; i<=project.getAdjMatrix().size(); i++){
             if (i == 0){
                 model.addColumn("Tasks");

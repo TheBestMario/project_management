@@ -74,11 +74,10 @@ public class ViewProjectsMenu{
 
                 for (Project p: menuHandler.getProjectHandler().getProjectsList()){
                     if (tableSelectionID.equals(p.getId())){
-                            ViewingMenu viewMenu = new ViewingMenu(menuHandler,p);
+                        ViewingMenu viewMenu = new ViewingMenu(menuHandler,p);
                         break;
                     }
                 }
-
             }
         });
         backButton.addActionListener(new ActionListener() {
