@@ -1,8 +1,6 @@
 import java.time.LocalDate
-import java.util.Date
 
 class ProjectHandler() {
-
     private var projectsList: MutableList<Project> = mutableListOf()
     private var id = 1
     private var dateToday= LocalDate.now()
@@ -10,35 +8,24 @@ class ProjectHandler() {
 
     fun makeNewProject(){
         val project = Project(id,null,null, dateToday, null)
-        id+=1
+        id++
         updateListWith(project)
     }
-    fun getDateToday(): LocalDate{
-
-        return dateToday
-    }
+    fun getDateToday(): LocalDate = dateToday
     fun updateListWith(Item: Project){
         projectsList.add(Item)
     }
     fun removeFromList(ID:Int){
-        for (i in projectsList){
-            if (i.getId() == ID)
-                projectsList.remove(i)
-                break
-        }
+        projectsList.removeAll { it.getId() == ID }
 
     }
-    fun getProjectsList(): MutableList<Project>{
-        return projectsList
-    }
+    fun getProjectsList(): MutableList<Project> = projectsList
     fun getCurrentObjectAttributes(): Array<String?> {
         return projectsList.last().getAttributesArrayForm()
     }
-    fun countProjects() : Int{
-        return projectsList.size
-    }
 }
 
+//make Project class object-oriented
 class Project(
     //project params
     private val id: Int,
@@ -81,15 +68,11 @@ class Project(
             }
         println(this.adjMatrix)
     }
-    fun getAdjMatrix(): ArrayList<ArrayList<Int>>{
-        return adjMatrix
-    }
+    fun getAdjMatrix(): ArrayList<ArrayList<Int>> = adjMatrix
     fun getAttributesArrayForm(): Array<String?> {
         return arrayOf("$id",name, description, "$num_Tasks","$startDate","$endDate")
     }
-    fun getName(): String?{
-        return name;
-    }
+    fun getName(): String? = name
     fun getDescription(): String?{
         if (description == null){
             description = ""
@@ -105,7 +88,7 @@ class Project(
     fun setDesc(Desc:String){
         description = Desc
     }
-    fun createTask(): Task{
+    fun addTask(): Task{
         //makes Task Object for each input
         num_Tasks+=1
         val task = Task("",num_Tasks,null,null)
@@ -126,12 +109,9 @@ class Project(
         }
         taskList.remove(task)
     }
-    fun getTaskList(): ArrayList<Task>{
-        return taskList
-    }
-    fun getId():Int{
-        return id
-    }
+    fun getTaskList(): ArrayList<Task> = taskList
+
+    fun getId():Int = id
 
 
     inner class Task(
@@ -142,34 +122,26 @@ class Project(
     ){
         private var startDate:LocalDate? = null;
         private var endDate:LocalDate? = null;
-        fun getParent(): Int? {
-           return parent
-        }
+        fun getParent(): Int? = parent
         fun setDates(start: LocalDate, end: LocalDate){
             startDate = start
             endDate = end
         }
 
-        fun getId(): Int? {
-            return id
-        }
+        fun getId(): Int? = id
         fun setId(id: Int?){
             this.id = id
         }
         fun setName(name: String){
             this.name = name
         }
-        fun getName(): String{
-            return this.name
-        }
-        fun getDates(): Array<LocalDate?>{
-            return arrayOf(startDate, endDate)
-        }
+        fun getName(): String = name
+        fun getDates(): Array<LocalDate?> = arrayOf(startDate, endDate)
         fun setDesc(desc:String){
-            this.description = desc
+            description = desc
         }
         fun setParent(p:Int){
-            this.parent = p
+            parent = p
         }
 
         override fun toString(): String{

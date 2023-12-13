@@ -131,7 +131,7 @@ public class ViewProjectsMenu{
     public void initialTableUpdate(){
         //checks for already existing data and adds to table.
         List<Project> list= menuHandler.getProjectHandler().getProjectsList();
-        int size= menuHandler.getProjectHandler().countProjects();
+        int size= menuHandler.getProjectHandler().getProjectsList().size();
         Project[] array = (Project[]) list.toArray();
         for (int item = 0; item < list.size(); item++){
             //System.out.println(list)

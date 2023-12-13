@@ -36,7 +36,7 @@ public class TaskView extends JDialog {
                 if (!(textField1.getText().isEmpty())){
                     ProjectHandler projectHandler = menuHandler.getProjectHandler();
                     //makes template task for current project
-                    Project.Task task = projectHandler.getProjectsList().getLast().createTask();
+                    Project.Task task = projectHandler.getProjectsList().getLast().addTask();
                     //adds task info into UI elements
                     //adds task made to temp list with attributes Name, Description, Parent(parent's ID)
                     projectHandler.getProjectsList().getLast().getTaskList().getLast().setName(nameInput().getText());
