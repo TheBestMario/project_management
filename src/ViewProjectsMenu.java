@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ViewProjectsMenu{
     private JButton viewButton;
     private final DefaultTableModel table1Model;
     private final MenuHandler menuHandler;
+
     private Integer tableSelectionID, row;
     public ViewProjectsMenu(MenuHandler menuHandler){
         this.menuHandler = menuHandler;
@@ -103,6 +105,26 @@ public class ViewProjectsMenu{
         System.out.println(project);
         table1Model.addRow(project);
     }
+
+    public void updateNameTable(Integer ID, String newName){
+        for (int i = 0; i<table1Model.getRowCount(); i++){
+            if (Integer.valueOf((String) table1Model.getValueAt(i,0)) == ID){
+                table1Model.setValueAt(newName, i, 1);
+                table1Model.fireTableDataChanged();
+                table1.repaint();
+            }
+        }
+    }
+    public void updateDescTable(Integer ID, String newDesc){
+        for (int i = 0; i<table1Model.getRowCount(); i++){
+            if (Integer.valueOf((String) table1Model.getValueAt(i,0)) == ID){
+                table1Model.setValueAt(newDesc, i, 2);
+                table1Model.fireTableDataChanged();
+                table1.repaint();
+            }
+        }
+    }
+
     public JPanel getPanel(){
         return panel;
     }
