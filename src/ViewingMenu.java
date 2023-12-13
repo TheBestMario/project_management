@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -14,13 +16,15 @@ import org.jfree.data.gantt.Task;
 import org.jfree.data.gantt.TaskSeries;
 import org.jfree.data.gantt.TaskSeriesCollection;
 
-public class ViewingMenu {
+public class ViewingMenu implements KeyListener {
     private JTextField textField1;
     private JTextArea textArea1;
     private JPanel panel;
     private JTable table1;
     private JPanel panel2;
     private JFrame frame;
+    private Project project;
+    private MenuHandler menuHandler;
 
     public IntervalCategoryDataset getCategoryDataset(Project project) {
 
@@ -30,13 +34,14 @@ public class ViewingMenu {
                     Date.from(task.getDates()[0].atStartOfDay().toInstant(ZoneOffset.UTC)),
                     Date.from(task.getDates()[1].atStartOfDay().toInstant(ZoneOffset.UTC))));
         }
-        System.out.println(project.getTaskList());
 
         TaskSeriesCollection dataset = new TaskSeriesCollection();
         dataset.add(series1);
         return dataset;
     }
     public ViewingMenu(MenuHandler menuHandler, Project project){
+        this.project = project;
+        this.menuHandler = menuHandler;
         frame = new JFrame();
         frame.add(panel);
         frame.setVisible(true);
@@ -44,6 +49,9 @@ public class ViewingMenu {
         frame.setLocationRelativeTo(menuHandler.getFrame());
         textField1.setText(project.getName());
         textArea1.setText(project.getDescription());
+        textField1.addKeyListener(this);
+        textArea1.addKeyListener(this);
+
         project.updateAdjMatrix();
         DefaultTableModel model = new DefaultTableModel();
         table1.setEnabled(false);
@@ -74,5 +82,27 @@ public class ViewingMenu {
         }
 
         table1.setModel(model);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    if (e.getSource() == textField1){
+        project.setName(textField1.getText());
+        menuHandler.getViewProjectsMenu().updateNameTable(project.getId(), textField1.getText());
+    }
+    if (e.getSource() == textArea1){
+        project.setDesc(textArea1.getText());
+        menuHandler.getViewProjectsMenu().updateDescTable(project.getId(), textArea1.getText());
+    }
     }
 }
