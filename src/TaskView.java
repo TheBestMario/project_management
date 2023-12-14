@@ -16,17 +16,29 @@ public class TaskView extends JDialog {
     private JSpinner spinner2;
     private SpinnerDateModel spinnerModel1, spinnerModel2;
 
-    public TaskView(MenuHandler menuHandler) {
+    public TaskView(MenuHandler menuHandler, Project.Task task, Project project) {
         LocalDate today = menuHandler.getProjectHandler().getDateToday();
         setContentPane(contentPane);
         getRootPane().setDefaultButton(buttonOK);
+
+        textField1.setText(task.getName());
+        textArea1.setText(task.getDesc());
+
         Date startLimit = (Date) menuHandler.getNewProjectMenu().getSpinner1().getValue();
         Date endLimit = (Date) menuHandler.getNewProjectMenu().getSpinner2().getValue();
         //sets spinner attributes
-        this.spinnerModel1 = new SpinnerDateModel(
-                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
-        this.spinnerModel2 = new SpinnerDateModel(
-                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
+        if (task.getDates()[0] != null){
+            spinnerModel1 = new SpinnerDateModel(
+                    Date.from(task.getDates()[0].atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
+            spinnerModel2 = new SpinnerDateModel(
+                    Date.from(task.getDates()[1].atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
+        }
+        else if (task.getDates()[0] == null){
+            spinnerModel1 = new SpinnerDateModel(
+                    Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
+            spinnerModel2 = new SpinnerDateModel(
+                    Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
+        }
         spinner1.setModel(spinnerModel1);
         spinner2.setModel(spinnerModel2);
         JSpinner.DateEditor editor1 = new JSpinner.DateEditor(spinner1,"dd/MM/yy");
@@ -40,11 +52,10 @@ public class TaskView extends JDialog {
 
                     ProjectHandler projectHandler = menuHandler.getProjectHandler();
                     //makes template task for current project
-                    Project.Task task = projectHandler.getProjectsList().getLast().addTask();
                     //adds task info into UI elements
                     //adds task made to temp list with attributes Name, Description, Parent(parent's ID)
-                    projectHandler.getProjectsList().getLast().getTaskList().getLast().setName(nameInput().getText());
-                    projectHandler.getProjectsList().getLast().getTaskList().getLast().setDesc(descInput().getText());
+                    task.setName(nameInput().getText());
+                    task.setName(nameInput().getText());
                     menuHandler.getNewProjectMenu().updateModel(task);
 
                     Date input = (Date) spinner1.getValue();

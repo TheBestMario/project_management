@@ -23,6 +23,13 @@ class ProjectHandler() {
     fun getCurrentObjectAttributes(): Array<String?> {
         return projectsList.last().getAttributesArrayForm()
     }
+    fun getProject(id: Int): Project?{
+        for (project in projectsList){
+            if (project.getId() == id)
+                return project
+        }
+        return null
+    }
 }
 
 //make Project class object-oriented
@@ -45,6 +52,13 @@ class Project(
             this.startDate = start
         if (end != null)
             this.endDate = end
+    }
+    fun getTask(id: Int): Task?{
+        for (task in taskList){
+            if (task.getId() == id)
+                return task
+        }
+        return null
     }
     fun updateAdjMatrix(){
         adjMatrix = arrayListOf()
@@ -78,9 +92,6 @@ class Project(
             description = ""
         }
         return description
-    }
-    fun divideTaskLength(){
-
     }
     fun setName(Name:String){
         name = Name;
@@ -136,6 +147,7 @@ class Project(
         fun setDesc(desc:String){
             description = desc
         }
+        fun getDesc(): String? = description
         fun setParent(p:Int){
             parent = p
         }

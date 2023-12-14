@@ -33,6 +33,7 @@ public class NewProjectMenu implements KeyListener {
     private MenuHandler menuHandler;
     private SpinnerDateModel spinnerModel1, spinnerModel2;
     private LocalDate today;
+    private Project project;
 
     public NewProjectMenu(MenuHandler menuHandler) {
         this.menuHandler = menuHandler;
@@ -71,13 +72,14 @@ public class NewProjectMenu implements KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 menuHandler.getFrame().setContentPane(menuHandler.getMainMenuGUI().getPanel());
-                projectHandler.removeFromList(projectHandler.getProjectsList().getLast().getId());
+                projectHandler.removeFromList(project.getId());
             }
         });
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TaskView taskInput = new TaskView(menuHandler);
+                Project.Task task = project.addTask();
+                TaskView taskInput = new TaskView(menuHandler, task, project);
                 taskInput.setVisible(true);
                 taskInput.setLocationRelativeTo(menuHandler.getFrame());
                 taskInput.setSize(500,500);
@@ -94,7 +96,7 @@ public class NewProjectMenu implements KeyListener {
                 }else if (selectedNode.isLeaf()){
                     info = selectedNode.getUserObject();
                     taskTreeModel.removeNodeFromParent(selectedNode);
-                    projectHandler.getProjectsList().getLast().removeTask((Project.Task) info);
+                    project.removeTask((Project.Task) info);
                     taskTreeModel.reload();
                 }
 
@@ -104,11 +106,11 @@ public class NewProjectMenu implements KeyListener {
                         DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) selectedNode.getChildAt(i);
                         info = childNode.getUserObject();
                         taskTreeModel.removeNodeFromParent(childNode);
-                        projectHandler.getProjectsList().getLast().removeTask((Project.Task) info);
+                        project.removeTask((Project.Task) info);
                     }
                     info = selectedNode.getUserObject();
                     taskTreeModel.removeNodeFromParent(selectedNode);
-                    projectHandler.getProjectsList().getLast().removeTask((Project.Task) info);
+                    project.removeTask((Project.Task) info);
                     taskTreeModel.reload();
 
                 }
@@ -129,9 +131,9 @@ public class NewProjectMenu implements KeyListener {
                 if (Name == null || Name.isEmpty()){
                     return;
                 }else{
-                    projectHandler.getProjectsList().getLast().setName(Name);
-                    projectHandler.getProjectsList().getLast().setDesc(Description);
-                    projectHandler.getProjectsList().getLast().updateDate(start, end);
+                    project.setName(Name);
+                    project.setDesc(Description);
+                    project.updateDate(start, end);
                     //sends data to make tasks for latest project.
 
                     //updates table after data saved
@@ -148,6 +150,7 @@ public class NewProjectMenu implements KeyListener {
         resetTempData();
         updateDrawList();
         projectHandler.makeNewProject();
+        project = projectHandler.getProjectsList().getLast();
         return panel;
     }
     public void resetTempData(){
@@ -171,13 +174,13 @@ public class NewProjectMenu implements KeyListener {
 
         if (selectedNode == null || selectedNode == root){
             root.add(node);
-            projectHandler.getProjectsList().getLast().getTaskList().getLast().setParent(0);
+            project.getTaskList().getLast().setParent(0);
 
         }else {
             selectedNode.add(node);
             parent = (Project.Task) info;
             System.out.println("PARENT SELECTED: "+ parent.getId());
-            projectHandler.getProjectsList().getLast().getTaskList().getLast().setParent(parent.getId());
+            project.getTaskList().getLast().setParent(parent.getId());
         }
 
         taskTreeModel.reload();

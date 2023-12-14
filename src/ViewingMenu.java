@@ -3,7 +3,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -22,6 +21,7 @@ public class ViewingMenu implements KeyListener {
     private JPanel panel;
     private JTable table1;
     private JPanel panel2;
+    private JTextField editTaskTextField;
     private JFrame frame;
     private Project project;
     private MenuHandler menuHandler;
@@ -30,7 +30,7 @@ public class ViewingMenu implements KeyListener {
 
         TaskSeries series1 = new TaskSeries("Estimated Date");
         for (Project.Task task: project.getTaskList()){
-            series1.add(new Task(task.getName() + " " + "(" + task.getId() + ")",
+            series1.add(new Task("(" + task.getId() + ")"+" "+task.getName(),
                     Date.from(task.getDates()[0].atStartOfDay().toInstant(ZoneOffset.UTC)),
                     Date.from(task.getDates()[1].atStartOfDay().toInstant(ZoneOffset.UTC))));
         }
@@ -49,14 +49,15 @@ public class ViewingMenu implements KeyListener {
         frame.setLocationRelativeTo(menuHandler.getFrame());
         textField1.setText(project.getName());
         textArea1.setText(project.getDescription());
+        //checks if project data changed to update table on ViewProjectsMenu
         textField1.addKeyListener(this);
         textArea1.addKeyListener(this);
-
+        editTaskTextField.addKeyListener(this);
         project.updateAdjMatrix();
         DefaultTableModel model = new DefaultTableModel();
         table1.setEnabled(false);
-        IntervalCategoryDataset dataset = getCategoryDataset(project);
 
+        IntervalCategoryDataset dataset = getCategoryDataset(project);
         JFreeChart chart = ChartFactory.createGanttChart(
                 project.getName(), // Chart title
                 "Tasks", // X-Axis Label
@@ -80,8 +81,24 @@ public class ViewingMenu implements KeyListener {
                 }
             }
         }
-
         table1.setModel(model);
+
+        editTaskTextField.addActionListener(e -> {
+            String input = editTaskTextField.getText();
+            input.trim();
+            int id = Integer.parseInt(input);
+            Project.Task task = project.getTask(id);
+
+            //checks if task exists or if input is empty
+            if (input.isEmpty() || task == null){
+                return;
+            }
+
+            TaskView taskView = new TaskView(menuHandler, task, project);
+            taskView.setVisible(true);
+            taskView.setLocationRelativeTo(menuHandler.getFrame());
+            taskView.setSize(500,500);
+        });
     }
 
     @Override
@@ -100,9 +117,19 @@ public class ViewingMenu implements KeyListener {
         project.setName(textField1.getText());
         menuHandler.getViewProjectsMenu().updateNameTable(project.getId(), textField1.getText());
     }
-    if (e.getSource() == textArea1){
+    else if (e.getSource() == textArea1){
         project.setDesc(textArea1.getText());
         menuHandler.getViewProjectsMenu().updateDescTable(project.getId(), textArea1.getText());
     }
+    else if (e.getSource() == editTaskTextField){
+        //reformats text box without spaces.
+        //\\s+ finds one or more spaces and replaces it with ""
+        String input = editTaskTextField.getText();
+        input = input.replaceAll("\\s+","");
+        input = input.trim();
+        System.out.println(input);
+        editTaskTextField.setText(input);
+    }
+
     }
 }
