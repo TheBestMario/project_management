@@ -15,8 +15,12 @@ public class TaskView extends JDialog {
     private JSpinner spinner1;
     private JSpinner spinner2;
     private SpinnerDateModel spinnerModel1, spinnerModel2;
+    private Project project;
+    private Project.Task task;
 
     public TaskView(MenuHandler menuHandler, Project.Task task, Project project) {
+        this.task = task;
+        this.project = project;
         LocalDate today = menuHandler.getProjectHandler().getDateToday();
         setContentPane(contentPane);
         getRootPane().setDefaultButton(buttonOK);
@@ -99,7 +103,8 @@ public class TaskView extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
+        project.removeTask(task);
+        System.out.println("getTaskList: " + project.getTaskList());
         dispose();
     }
 }

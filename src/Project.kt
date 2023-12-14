@@ -1,6 +1,6 @@
 import java.time.LocalDate
 
-class ProjectHandler() {
+class ProjectHandler {
     private var projectsList: MutableList<Project> = mutableListOf()
     private var id = 1
     private var dateToday= LocalDate.now()
