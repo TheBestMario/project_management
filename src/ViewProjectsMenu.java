@@ -136,7 +136,7 @@ public class ViewProjectsMenu implements Menu{
     }
 
     @Override
-    public Container getPanel() {
+    public JPanel getPanel() {
         return panel;
     }
 
