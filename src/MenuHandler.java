@@ -44,7 +44,4 @@ public class MenuHandler {
     public ViewProjectsMenu getViewProjectsMenu(){
         return viewProjectsMenu;
     }
-//    fun getTableHandler(): TableHandler{
-//        return table;
-//    }
 }

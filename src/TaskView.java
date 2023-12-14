@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.event.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -19,11 +20,13 @@ public class TaskView extends JDialog {
         LocalDate today = menuHandler.getProjectHandler().getDateToday();
         setContentPane(contentPane);
         getRootPane().setDefaultButton(buttonOK);
+        Date startLimit = (Date) menuHandler.getNewProjectMenu().getSpinner1().getValue();
+        Date endLimit = (Date) menuHandler.getNewProjectMenu().getSpinner2().getValue();
         //sets spinner attributes
         this.spinnerModel1 = new SpinnerDateModel(
-                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),null,null, Calendar.DAY_OF_MONTH);
+                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
         this.spinnerModel2 = new SpinnerDateModel(
-                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),null,null, Calendar.DAY_OF_MONTH);
+                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()),startLimit,endLimit, Calendar.DAY_OF_MONTH);
         spinner1.setModel(spinnerModel1);
         spinner2.setModel(spinnerModel2);
         JSpinner.DateEditor editor1 = new JSpinner.DateEditor(spinner1,"dd/MM/yy");
@@ -34,6 +37,7 @@ public class TaskView extends JDialog {
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!(textField1.getText().isEmpty())){
+
                     ProjectHandler projectHandler = menuHandler.getProjectHandler();
                     //makes template task for current project
                     Project.Task task = projectHandler.getProjectsList().getLast().addTask();
@@ -53,6 +57,7 @@ public class TaskView extends JDialog {
             }
         });
 
+        //used intellij to generate this code
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();

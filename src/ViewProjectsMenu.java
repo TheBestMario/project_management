@@ -115,6 +115,7 @@ public class ViewProjectsMenu{
             }
         }
     }
+
     public void updateDescTable(Integer ID, String newDesc){
         for (int i = 0; i<table1Model.getRowCount(); i++){
             if (Integer.valueOf((String) table1Model.getValueAt(i,0)) == ID){

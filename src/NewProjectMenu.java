@@ -1,16 +1,12 @@
-import org.intellij.lang.annotations.Flow;
-
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,6 +23,7 @@ public class NewProjectMenu implements KeyListener {
     private JTree tree;
     private JSpinner spinner1;
     private JSpinner spinner2;
+    private JButton deleteTaskButton;
     private DefaultTreeModel taskTreeModel;
     private DefaultMutableTreeNode root;
     private Object info;
@@ -87,6 +84,36 @@ public class NewProjectMenu implements KeyListener {
 
             }
         });
+        deleteTaskButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedNode == null || selectedNode == root) {
+                    deleteTaskButton.setEnabled(false);
+                    return;
+
+                }else if (selectedNode.isLeaf()){
+                    info = selectedNode.getUserObject();
+                    taskTreeModel.removeNodeFromParent(selectedNode);
+                    projectHandler.getProjectsList().getLast().removeTask((Project.Task) info);
+                    taskTreeModel.reload();
+                }
+
+                else{
+                    //removes children of task and then task itself
+                    for (int i = 0; i < selectedNode.getChildCount(); i++){
+                        DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) selectedNode.getChildAt(i);
+                        info = childNode.getUserObject();
+                        taskTreeModel.removeNodeFromParent(childNode);
+                        projectHandler.getProjectsList().getLast().removeTask((Project.Task) info);
+                    }
+                    info = selectedNode.getUserObject();
+                    taskTreeModel.removeNodeFromParent(selectedNode);
+                    projectHandler.getProjectsList().getLast().removeTask((Project.Task) info);
+                    taskTreeModel.reload();
+
+                }
+            }
+        });
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -142,7 +169,7 @@ public class NewProjectMenu implements KeyListener {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(task);
         Project.Task parent;
 
-        if (info == null || info == root.getUserObject()){
+        if (selectedNode == null || selectedNode == root){
             root.add(node);
             projectHandler.getProjectsList().getLast().getTaskList().getLast().setParent(0);
 
@@ -170,5 +197,13 @@ public class NewProjectMenu implements KeyListener {
         rootName = projectNameField.getText();
         root.setUserObject(rootName);
         taskTreeModel.reload();
+    }
+
+    public JSpinner getSpinner1() {
+        return spinner1;
+    }
+
+    public JSpinner getSpinner2() {
+        return spinner2;
     }
 }

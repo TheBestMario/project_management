@@ -96,18 +96,14 @@ class Project(
 
         return task
     }
+
     fun removeTask(task: Task){
         num_Tasks-=1
-        for (i in 0 .. num_Tasks-1){
-            if (taskList[i].equals(task)){
-                val tasks = taskList.takeLast(i)
-                for (i in tasks){
-                    i.setId(i.getId()?.minus(1))
-                }
-                break
-            }
-        }
         taskList.remove(task)
+        //updates the id of the tasks
+        for (i in 0 .. num_Tasks-1){
+            taskList[i].setId(i+1)
+        }
     }
     fun getTaskList(): ArrayList<Task> = taskList
 
@@ -116,7 +112,7 @@ class Project(
 
     inner class Task(
         private var name: String,
-        private var id: Int?,
+        private var id: Int,
         private var description: String?,
         private var parent: Int?
     ){
@@ -128,8 +124,8 @@ class Project(
             endDate = end
         }
 
-        fun getId(): Int? = id
-        fun setId(id: Int?){
+        fun getId(): Int = id
+        fun setId(id: Int){
             this.id = id
         }
         fun setName(name: String){
