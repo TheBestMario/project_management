@@ -109,7 +109,8 @@ class Project(
     }
 
     fun removeTask(task: Task){
-        num_Tasks-=1
+        if (num_Tasks > 0)
+            num_Tasks-=1
         taskList.remove(task)
         //updates the id of the tasks
         for (i in 0 .. num_Tasks-1){

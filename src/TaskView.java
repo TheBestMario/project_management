@@ -18,7 +18,10 @@ public class TaskView extends JDialog {
     private Project project;
     private Project.Task task;
 
-    public TaskView(MenuHandler menuHandler, Project.Task task, Project project) {
+    private String previousMenu;
+
+    public TaskView(MenuHandler menuHandler, Project.Task task, Project project, String previousMenu) {
+        this.previousMenu = previousMenu;
         this.task = task;
         this.project = project;
         LocalDate today = menuHandler.getProjectHandler().getDateToday();
@@ -75,6 +78,7 @@ public class TaskView extends JDialog {
         //used intellij to generate this code
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 onCancel();
             }
         });
@@ -103,8 +107,9 @@ public class TaskView extends JDialog {
     }
 
     private void onCancel() {
-        project.removeTask(task);
-        System.out.println("getTaskList: " + project.getTaskList());
+        if (previousMenu == "NewProjectMenu"){
+            project.removeTask(task);
+        }
         dispose();
     }
 }

@@ -94,7 +94,7 @@ public class ViewingMenu implements KeyListener {
                 return;
             }
 
-            TaskView taskView = new TaskView(menuHandler, task, project);
+            TaskView taskView = new TaskView(menuHandler, task, project, "ViewingMenu");
             taskView.setVisible(true);
             taskView.setLocationRelativeTo(menuHandler.getFrame());
             taskView.setSize(500,500);

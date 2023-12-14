@@ -79,7 +79,7 @@ public class NewProjectMenu implements KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Project.Task task = project.addTask();
-                TaskView taskInput = new TaskView(menuHandler, task, project);
+                TaskView taskInput = new TaskView(menuHandler, task, project, "NewProjectMenu");
                 taskInput.setVisible(true);
                 taskInput.setLocationRelativeTo(menuHandler.getFrame());
                 taskInput.setSize(500,500);
