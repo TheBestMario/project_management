@@ -10,7 +10,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
-public class NewProjectMenu implements KeyListener {
+public class NewProjectMenu implements KeyListener, Menu {
     private JLabel buildYourProjectLabel;
     private JTextField projectNameField;
     private JLabel projectNameLabel;
@@ -138,21 +138,37 @@ public class NewProjectMenu implements KeyListener {
 
                     //updates table after data saved
                     menuHandler.getViewProjectsMenu().addToTable();
-                    //returns to home page
-                    menuHandler.getFrame().setContentPane(menuHandler.getMainMenuGUI().getPanel());
+                    menuHandler.switchToMainMenu();
+
                 }
             }
         });
     }
 
+    @Override
     public JPanel getPanel() {
         //every time the menu is opened it will reset it and make project template
+        return panel;
+    }
+
+    @Override
+    public void display() {
         resetTempData();
         updateDrawList();
         projectHandler.makeNewProject();
         project = projectHandler.getProjectsList().getLast();
-        return panel;
+        panel.setVisible(true);
+
     }
+
+    @Override
+    public void hide() {
+        //hides menu and returns to home page
+        resetTempData();
+        updateDrawList();
+        projectHandler.makeNewProject();
+    }
+
     public void resetTempData(){
         //resets data from previous UI
         info = null;

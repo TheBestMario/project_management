@@ -1,7 +1,9 @@
 import javax.swing.*;
 
-public class MenuHandler {
+
+public class MenuHandler{
     //initialises all relevant systems
+    private Menu menu;
     private final JFrame frame;
 
     //private val table: TableHandler = TableHandler(this)
@@ -16,11 +18,11 @@ public class MenuHandler {
         this.projectHandler = new ProjectHandler();
         this.newProjectMenu = new NewProjectMenu(this);
         this.viewProjectsMenu = new ViewProjectsMenu(this);
-        this.frame = initFrame(mainMenuGUI.getPanel());
+        this.frame = initFrame();
+        setMenu(mainMenuGUI);
     }
-    private JFrame initFrame(JPanel panel){
-        JFrame frame = new JFrame();
-        frame.setContentPane(panel);
+    private JFrame initFrame(){
+        JFrame frame = new JFrame("Project Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
@@ -43,5 +45,24 @@ public class MenuHandler {
     }
     public ViewProjectsMenu getViewProjectsMenu(){
         return viewProjectsMenu;
+    }
+
+    public void setMenu(Menu menu){
+        if (this.menu != null){
+            this.menu.hide();
+        }
+        this.menu = menu;
+        frame.setContentPane(menu.getPanel());
+        System.out.println(this.menu);
+        this.menu.display();
+    }
+    public void switchToMainMenu(){
+        setMenu(mainMenuGUI);
+    }
+    public void switchToNewProjectMenu(){
+        setMenu(newProjectMenu);
+    }
+    public void switchToViewProjectsMenu(){
+        setMenu(viewProjectsMenu);
     }
 }

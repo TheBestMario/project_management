@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-public class MainMenuGUI implements ActionListener{
+public class MainMenuGUI implements ActionListener, Menu{
     private JButton setUpNewProjectButton;
     private JButton viewExistingButton;
     private JButton exitButton;
@@ -17,7 +17,7 @@ public class MainMenuGUI implements ActionListener{
         exitButton.addActionListener(this);
 
     }
-
+    @Override
     public JPanel getPanel() {
         return panel;
     }
@@ -28,14 +28,25 @@ public class MainMenuGUI implements ActionListener{
         //I wanted to use case here but when you do case(button) it says that the button isn't a constant
         if (e.getSource().equals(setUpNewProjectButton)) {
             //gets panel from object newprojectmenu from object buildmenu. quite long-winded
-            menuHandler.getFrame().setContentPane(menuHandler.getNewProjectMenu().getPanel());
+            menuHandler.switchToNewProjectMenu();
             menuHandler.getFrame().setSize(699,699);
         } else if (e.getSource().equals(viewExistingButton)) {
-            menuHandler.getFrame().setContentPane(menuHandler.getViewProjectsMenu().getPanel());
+            menuHandler.switchToViewProjectsMenu();
             menuHandler.getFrame().setSize(700,700);
 
         } else if (e.getSource().equals(exitButton)) {
             System.exit(0);
         }
+    }
+
+    @Override
+    public void display() {
+        menuHandler.getFrame().revalidate();
+        menuHandler.getFrame().repaint();
+    }
+
+    @Override
+    public void hide() {
+
     }
 }

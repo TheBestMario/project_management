@@ -5,13 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.Console;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-public class ViewProjectsMenu{
+public class ViewProjectsMenu implements Menu{
     private JPanel panel;
     private JButton backButton;
     private JLabel viewLabel;
@@ -83,7 +80,7 @@ public class ViewProjectsMenu{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                menuHandler.getFrame().setContentPane(menuHandler.getMainMenuGUI().getPanel());
+                menuHandler.switchToMainMenu();
             }
         });
         deleteProjectButton.addActionListener(new ActionListener() {
@@ -126,9 +123,23 @@ public class ViewProjectsMenu{
         }
     }
 
-    public JPanel getPanel(){
+    @Override
+    public void display() {
+
+        menuHandler.getFrame().revalidate();
+        menuHandler.getFrame().repaint();
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public Container getPanel() {
         return panel;
     }
+
     public void initialTableUpdate(){
         //checks for already existing data and adds to table.
         List<Project> list= menuHandler.getProjectHandler().getProjectsList();
