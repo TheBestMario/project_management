@@ -23,6 +23,11 @@ public class MainMenuGUI implements ActionListener, Menu{
     }
 
     @Override
+    public JFrame getFrame() {
+        return menuHandler.getFrame();
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         //checks what button was pressed
         //I wanted to use case here but when you do case(button) it says that the button isn't a constant

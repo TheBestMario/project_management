@@ -150,7 +150,11 @@ class Project(
         }
         fun getDesc(): String? = description
         fun setParent(p:Int){
-            parent = p
+            if (p == id)
+                println("cannot set parent to itself")
+            else if (p > num_Tasks)
+                println("parent does not exist")
+            else parent = p
         }
 
         override fun toString(): String{

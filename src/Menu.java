@@ -4,4 +4,6 @@ public interface Menu {
     void hide();
 
     JPanel getPanel();
+
+    JFrame getFrame();
 }

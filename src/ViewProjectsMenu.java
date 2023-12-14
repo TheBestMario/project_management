@@ -140,6 +140,11 @@ public class ViewProjectsMenu implements Menu{
         return panel;
     }
 
+    @Override
+    public JFrame getFrame() {
+        return null;
+    }
+
     public void initialTableUpdate(){
         //checks for already existing data and adds to table.
         List<Project> list= menuHandler.getProjectHandler().getProjectsList();

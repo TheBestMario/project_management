@@ -152,12 +152,16 @@ public class NewProjectMenu implements KeyListener, Menu {
     }
 
     @Override
+    public JFrame getFrame() {
+        return null;
+    }
+
+    @Override
     public void display() {
         resetTempData();
         updateDrawList();
         projectHandler.makeNewProject();
         project = projectHandler.getProjectsList().getLast();
-        panel.setVisible(true);
 
     }
 

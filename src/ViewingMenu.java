@@ -15,7 +15,7 @@ import org.jfree.data.gantt.Task;
 import org.jfree.data.gantt.TaskSeries;
 import org.jfree.data.gantt.TaskSeriesCollection;
 
-public class ViewingMenu implements KeyListener {
+public class ViewingMenu implements KeyListener, Menu {
     private JTextField textField1;
     private JTextArea textArea1;
     private JPanel panel;
@@ -56,6 +56,9 @@ public class ViewingMenu implements KeyListener {
         project.updateAdjMatrix();
         DefaultTableModel model = new DefaultTableModel();
         table1.setEnabled(false);
+        for (Project.Task task: project.getTaskList()){
+            System.out.println(task.getParent());
+        }
 
         IntervalCategoryDataset dataset = getCategoryDataset(project);
         JFreeChart chart = ChartFactory.createGanttChart(
@@ -97,7 +100,8 @@ public class ViewingMenu implements KeyListener {
             TaskView taskView = new TaskView(menuHandler, task, project, "ViewingMenu");
             taskView.setVisible(true);
             taskView.setLocationRelativeTo(menuHandler.getFrame());
-            taskView.setSize(500,500);
+            taskView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            taskView.setSize(500,300);
         });
     }
 
@@ -131,5 +135,24 @@ public class ViewingMenu implements KeyListener {
         editTaskTextField.setText(input);
     }
 
+    }
+
+    @Override
+    public void display() {
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    @Override
+    public JFrame getFrame() {
+        return null;
     }
 }

@@ -65,4 +65,7 @@ public class MenuHandler{
     public void switchToViewProjectsMenu(){
         setMenu(viewProjectsMenu);
     }
+    public void openViewingMenu(Project project){
+        ViewingMenu viewingMenu = new ViewingMenu(this, project);
+    }
 }
