@@ -46,8 +46,6 @@ public class ViewProjectsMenu implements Menu{
                     viewButton.setEnabled(true);
                     deleteProjectButton.setEnabled(true);
                 }
-
-
             }
 
             @Override

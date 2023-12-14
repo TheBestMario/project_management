@@ -32,7 +32,6 @@ class ProjectHandler {
     }
 }
 
-//make Project class object-oriented
 class Project(
     //project params
     private val id: Int,
